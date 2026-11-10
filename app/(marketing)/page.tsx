@@ -11,11 +11,12 @@ const CONFIG = {
   ctaUrl: "https://treningi.fizjotanecznie.pl/pl_PL/products/czlonkostwo-fizjotanecznie",
   microcopy: "Nowy trening co tydzień · anulujesz w każdej chwili",
 
-  // Wybierz "embed" (Wariant B: fasada YouTube/Vimeo/Bunny) lub "mp4" (Wariant A: natywny plik MP4 z CDN)
-  videoVariant: "embed" as "embed" | "mp4",
+  // Wybierz "hls" (stream HLS .m3u8), "embed" (fasada YouTube/Vimeo/Bunny) lub "mp4" (natywny plik MP4)
+  videoVariant: "hls" as "hls" | "embed" | "mp4",
+  videoSourceHls: "/hls/Mobilny_przod_uda_V1/master.m3u8",
   videoSourceMp4: "https://twoj-cdn.pl/trening-przykladowy.mp4", // [ŹRÓDŁO_WIDEO] dla Wariantu A
   videoEmbedUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ", // [ŹRÓDŁO_WIDEO] dla Wariantu B
-  videoPoster: "/poster-placeholder.svg", // [OKŁADKA_1280x720] – docelowo ścieżka do pliku .webp / .avif
+  videoPoster: "/hls/Mobilny_przod_uda_V1/Mobilny_przod_uda_V1.png",
 
   privacyUrl: "https://treningi.fizjotanecznie.pl/pl_PL/polityka-prywatnosci",
   termsUrl: "https://treningi.fizjotanecznie.pl/pl_PL/regulamin",
@@ -71,7 +72,13 @@ export default function LandingPage() {
 
         {/* ┌──────────── WIDEO 16:9 ────────────┐ */}
         <div className="mt-6 w-full max-w-[min(100%,calc((100svh-250px)*16/9))] sm:mt-8">
-          {CONFIG.videoVariant === "mp4" ? (
+          {CONFIG.videoVariant === "hls" ? (
+            <VideoPlayer
+              variant="hls"
+              src={CONFIG.videoSourceHls}
+              poster={CONFIG.videoPoster}
+            />
+          ) : CONFIG.videoVariant === "mp4" ? (
             <VideoPlayer
               variant="mp4"
               src={CONFIG.videoSourceMp4}

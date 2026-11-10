@@ -1,8 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Hls from "hls.js";
 
 type VideoPlayerProps =
+  | {
+      variant: "hls";
+      src: string;
+      poster: string;
+      title?: string;
+    }
   | {
       variant: "mp4";
       src: string;
@@ -18,7 +25,31 @@ type VideoPlayerProps =
 
 export default function VideoPlayer(props: VideoPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const title = props.title ?? "Przykładowy trening dla tancerzy";
+
+  useEffect(() => {
+    if (props.variant !== "hls" || !isPlaying) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (Hls.isSupported()) {
+      const hls = new Hls({
+        enableWorker: true,
+      });
+      hls.loadSource(props.src);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(() => {});
+      });
+      return () => {
+        hls.destroy();
+      };
+    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = props.src;
+      video.play().catch(() => {});
+    }
+  }, [props.variant, isPlaying, props]);
 
   if (props.variant === "mp4") {
     return (
@@ -36,10 +67,6 @@ export default function VideoPlayer(props: VideoPlayerProps) {
       </div>
     );
   }
-
-  // Wariant B – Fasada (YouTube-nocookie / Vimeo / Bunny Stream)
-  const separator = props.embedUrl.includes("?") ? "&" : "?";
-  const autoplayUrl = `${props.embedUrl}${separator}autoplay=1&rel=0`;
 
   return (
     <div className="relative aspect-video w-full overflow-hidden rounded-[14px] bg-neutral-900 shadow-[0_12px_40px_rgba(0,0,0,0.65)] ring-1 ring-white/10">
@@ -82,9 +109,20 @@ export default function VideoPlayer(props: VideoPlayerProps) {
             </svg>
           </span>
         </button>
+      ) : props.variant === "hls" ? (
+        <video
+          ref={videoRef}
+          controls
+          playsInline
+          autoPlay
+          poster={props.poster}
+          className="h-full w-full object-cover"
+        >
+          Twoja przeglądarka nie obsługuje odtwarzacza wideo HTML5.
+        </video>
       ) : (
         <iframe
-          src={autoplayUrl}
+          src={`${props.embedUrl}${props.embedUrl.includes("?") ? "&" : "?"}autoplay=1&rel=0`}
           title={title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
