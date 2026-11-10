@@ -8,7 +8,7 @@ const CONFIG = {
   logoAlt: "fizjotanecznie",
   heading: "ZOBACZ, JAK WYGLĄDA TRENING DLA TANCERZY",
   ctaText: "Dołącz do platformy",
-  ctaUrl: "#dolacz", // [URL_CTA]
+  ctaUrl: "https://treningi.fizjotanecznie.pl/pl_PL/products/czlonkostwo-fizjotanecznie",
   microcopy: "Nowy trening co tydzień · anulujesz w każdej chwili",
 
   // Wybierz "embed" (Wariant B: fasada YouTube/Vimeo/Bunny) lub "mp4" (Wariant A: natywny plik MP4 z CDN)
@@ -17,8 +17,8 @@ const CONFIG = {
   videoEmbedUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ", // [ŹRÓDŁO_WIDEO] dla Wariantu B
   videoPoster: "/poster-placeholder.svg", // [OKŁADKA_1280x720] – docelowo ścieżka do pliku .webp / .avif
 
-  privacyUrl: "/polityka-prywatnosci",
-  termsUrl: "/regulamin",
+  privacyUrl: "https://treningi.fizjotanecznie.pl/pl_PL/polityka-prywatnosci",
+  termsUrl: "https://treningi.fizjotanecznie.pl/pl_PL/regulamin",
 };
 
 function CtaButton() {
