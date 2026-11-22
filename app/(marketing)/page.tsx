@@ -1,3 +1,4 @@
+import DiscountCode from "@/components/DiscountCode";
 import VideoPlayer from "@/components/VideoPlayer";
 
 /**
@@ -9,6 +10,8 @@ const CONFIG = {
   heading: "ZOBACZ, JAK WYGLĄDA TRENING DLA TANCERZY",
   ctaText: "Dołącz do platformy",
   ctaUrl: "https://treningi.fizjotanecznie.pl/pl_PL/products/czlonkostwo-fizjotanecznie",
+  discountValue: "-30%",
+  discountCode: "BF30",
   microcopy: "Nowy trening co tydzień · anulujesz w każdej chwili",
 
   // Wybierz "hls" (stream HLS .m3u8), "embed" (fasada YouTube/Vimeo/Bunny) lub "mp4" (natywny plik MP4)
@@ -60,9 +63,13 @@ export default function LandingPage() {
           {CONFIG.heading}
         </h1>
 
-        {/* [ PRZYCISK CTA ] + mikrocopy */}
+        {/* [ PRZYCISK CTA ] + kod rabatowy + mikrocopy */}
         <div className="mt-5 flex w-full flex-col items-center sm:mt-7">
           <CtaButton />
+          <DiscountCode
+            code={CONFIG.discountCode}
+            discount={CONFIG.discountValue}
+          />
           {CONFIG.microcopy && (
             <p className="mt-2.5 text-center text-xs font-medium text-neutral-400 sm:text-sm">
               {CONFIG.microcopy}
@@ -96,6 +103,10 @@ export default function LandingPage() {
         {/* [ PRZYCISK CTA ] (powtórzony – dla osób, które obejrzały wideo) */}
         <div className="mt-7 flex w-full flex-col items-center sm:mt-9">
           <CtaButton />
+          <DiscountCode
+            code={CONFIG.discountCode}
+            discount={CONFIG.discountValue}
+          />
         </div>
       </div>
 
