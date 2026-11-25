@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="pl" className={montserrat.variable}>
       <body className="min-h-[100svh] bg-bg font-sans font-medium text-white antialiased selection:bg-brand selection:text-white">
         {children}
+        <Analytics />
       </body>
     </html>
   );
